@@ -1,6 +1,6 @@
 # BreakingTTAPs - Transport Triggered Architecture Processor
 
-![BreakingTTAPs Chip](/images/chip_top_small_black.png)y
+![BreakingTTAPs Chip](/images/chip_top_small_black.png)
 
 # gf180mcu Project Template
 
