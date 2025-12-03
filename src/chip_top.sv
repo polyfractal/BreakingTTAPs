@@ -7,13 +7,13 @@
 
 module chip_top #(
     // Power/ground pads for core and I/O
-    parameter NUM_DVDD_PADS = `NUM_DVDD_PADS,
-    parameter NUM_DVSS_PADS = `NUM_DVSS_PADS,
+    parameter NUM_DVDD_PADS = 8,
+    parameter NUM_DVSS_PADS = 10,
 
     // Signal pads
-    parameter NUM_INPUT_PADS = `NUM_INPUT_PADS,
-    parameter NUM_BIDIR_PADS = `NUM_BIDIR_PADS,
-    parameter NUM_ANALOG_PADS = `NUM_ANALOG_PADS
+    parameter NUM_INPUT_PADS = 13,
+    parameter NUM_BIDIR_PADS = 41
+    //parameter NUM_ANALOG_PADS = 2
     )(
     `ifdef USE_POWER_PINS
     inout  wire VDD,
@@ -24,9 +24,9 @@ module chip_top #(
     inout  wire rst_n_PAD,
     
     inout  wire [NUM_INPUT_PADS-1:0] input_PAD,
-    inout  wire [NUM_BIDIR_PADS-1:0] bidir_PAD,
+    inout  wire [NUM_BIDIR_PADS-1:0] bidir_PAD
     
-    inout  wire [NUM_ANALOG_PADS-1:0] analog_PAD
+    //inout  wire [NUM_ANALOG_PADS-1:0] analog_PAD
 );
 
     wire clk_PAD2CORE;
@@ -150,6 +150,7 @@ module chip_top #(
     end
     endgenerate
 
+    /*
     generate
     for (genvar i=0; i<NUM_ANALOG_PADS; i++) begin : analog
         (* keep *)
@@ -164,13 +165,14 @@ module chip_top #(
         );
     end
     endgenerate
+    */
 
     // Core design
 
     chip_core #(
         .NUM_INPUT_PADS  (NUM_INPUT_PADS),
-        .NUM_BIDIR_PADS  (NUM_BIDIR_PADS),
-        .NUM_ANALOG_PADS (NUM_ANALOG_PADS)
+        .NUM_BIDIR_PADS  (NUM_BIDIR_PADS)
+        //.NUM_ANALOG_PADS (NUM_ANALOG_PADS)
     ) i_chip_core (
         `ifdef USE_POWER_PINS
         .VDD        (VDD),
@@ -191,9 +193,9 @@ module chip_top #(
         .bidir_sl   (bidir_CORE2PAD_SL),
         .bidir_ie   (bidir_CORE2PAD_IE),
         .bidir_pu   (bidir_CORE2PAD_PU),
-        .bidir_pd   (bidir_CORE2PAD_PD),
+        .bidir_pd   (bidir_CORE2PAD_PD)
         
-        .analog     (analog_PAD)
+        //.analog     (analog_PAD)
     );
     
     // Chip ID - do not remove, necessary for tapeout
@@ -203,6 +205,14 @@ module chip_top #(
     // wafer.space logo - can be removed
     (* keep *)
     gf180mcu_ws_ip__logo wafer_space_logo ();
+
+    // bt logo
+    (* keep *)
+    gf180mcu_bt_ip__logo bt_logo ();
+
+    // bt tap
+    (* keep *)
+    gf180mcu_bt_ip__tap bt_tap ();
 
 endmodule
 

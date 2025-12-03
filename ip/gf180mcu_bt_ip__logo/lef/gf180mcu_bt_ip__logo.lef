@@ -1,0 +1,16 @@
+VERSION 5.7 ;
+  NOWIREEXTENSIONATPIN ON ;
+  DIVIDERCHAR "/" ;
+  BUSBITCHARS "[]" ;
+MACRO gf180mcu_bt_ip__logo
+  CLASS BLOCK ;
+  FOREIGN gf180mcu_bt_ip__logo ;
+  ORIGIN 0.000 0.000 ;
+  SIZE 187.50 BY 75.00 ;
+  OBS
+      LAYER Metal5 ;
+        RECT 0.0 0.0 187.50 75.00 ;
+  END
+END gf180mcu_bt_ip__logo
+END LIBRARY
+

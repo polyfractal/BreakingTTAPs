@@ -1,0 +1,2 @@
+module gf180mcu_bt_ip__logo;
+endmodule
