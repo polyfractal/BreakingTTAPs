@@ -1,3 +1,7 @@
+# BreakingTTAPs - Transport Triggered Architecture Processor
+
+![BreakingTTAPs Chip](/images/chip_top_small_black.png)y
+
 # gf180mcu Project Template
 
 Project template for wafer.space MPW runs using the gf180mcu PDK.
