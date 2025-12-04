@@ -35,6 +35,114 @@ VERILOG_FILES:
 # Slightly smaller file sizes
 PRIMARY_GDSII_STREAMOUT_TOOL: klayout
 
+QUIT_ON_MAGIC_DRC: False
+QUIT_ON_KLAYOUT_DRC: False
+STD_CELL_LIBRARY: gf180mcu_fd_sc_mcu9t5v0
+
+# Specify the pad instances for the padring
+PAD_SOUTH: [
+    clk_pad,
+    rst_n_pad,
+
+    "bidir\\[0\\].pad",
+    "bidir\\[1\\].pad",
+    "bidir\\[2\\].pad",
+    "bidir\\[3\\].pad",
+    "inputs\\[11\\].pad",
+    "inputs\\[12\\].pad",
+
+    "dvss_pads\\[0\\].pad",
+
+    "inputs\\[10\\].pad",
+    "inputs\\[9\\].pad",
+    "inputs\\[8\\].pad",
+    "inputs\\[7\\].pad",
+    "inputs\\[6\\].pad",
+    "inputs\\[5\\].pad",
+    "inputs\\[4\\].pad",
+    "inputs\\[3\\].pad"
+
+]
+
+PAD_EAST: [
+    "dvdd_pads\\[0\\].pad",
+    "dvss_pads\\[1\\].pad",
+
+    "bidir\\[14\\].pad",
+    "bidir\\[15\\].pad",
+    "bidir\\[16\\].pad",
+    "bidir\\[17\\].pad",
+    "bidir\\[18\\].pad",
+    "bidir\\[19\\].pad",
+    
+    "dvdd_pads\\[1\\].pad",
+    "dvss_pads\\[2\\].pad",
+
+    
+    "bidir\\[20\\].pad",
+    "bidir\\[21\\].pad",
+    "bidir\\[22\\].pad",
+    "inputs\\[0\\].pad",
+    "inputs\\[1\\].pad",
+    "inputs\\[2\\].pad",
+    
+    "dvss_pads\\[3\\].pad",
+    "dvdd_pads\\[2\\].pad",
+    "dvss_pads\\[4\\].pad",
+    "dvdd_pads\\[3\\].pad",
+]
+
+PAD_NORTH: [
+    "bidir\\[4\\].pad",
+    "bidir\\[5\\].pad",
+    "bidir\\[40\\].pad",
+    "bidir\\[39\\].pad",
+    "bidir\\[38\\].pad",
+    "bidir\\[37\\].pad",
+    "bidir\\[36\\].pad",
+    "bidir\\[35\\].pad",
+
+    "dvss_pads\\[5\\].pad",
+
+    "bidir\\[6\\].pad",
+    "bidir\\[7\\].pad",
+    "bidir\\[8\\].pad",
+    "bidir\\[9\\].pad",
+    "bidir\\[10\\].pad",
+    "bidir\\[11\\].pad",
+    "bidir\\[12\\].pad",
+    "bidir\\[13\\].pad"
+]
+
+
+PAD_WEST: [
+    "dvdd_pads\\[7\\].pad",
+    "dvss_pads\\[9\\].pad",
+    "dvdd_pads\\[6\\].pad",
+    "dvss_pads\\[8\\].pad",
+
+    "bidir\\[34\\].pad",
+    "bidir\\[33\\].pad",
+    "bidir\\[32\\].pad",
+    "bidir\\[31\\].pad",
+    "bidir\\[30\\].pad",
+    "bidir\\[29\\].pad",
+
+    "dvdd_pads\\[5\\].pad",
+    "dvss_pads\\[7\\].pad",
+
+    "bidir\\[28\\].pad",
+    "bidir\\[27\\].pad",
+    "bidir\\[26\\].pad",
+    "bidir\\[25\\].pad",
+
+    "dvdd_pads\\[4\\].pad",
+    "dvss_pads\\[6\\].pad",
+    
+    "bidir\\[24\\].pad",
+    "bidir\\[23\\].pad"
+]
+
 # SDC files
 PNR_SDC_FILE: dir::chip_top.sdc
 SIGNOFF_SDC_FILE: dir::chip_top.sdc
@@ -52,20 +160,37 @@ IGNORE_DISCONNECTED_MODULES:
 - gf180mcu_fd_io__bi_24t
 - gf180mcu_ws_ip__id
 - gf180mcu_ws_ip__logo
+- gf180mcu_bt_ip__logo
+- gf180mcu_bt_ip__tap
 
 # Clock
 CLOCK_PORT: clk_PAD
 CLOCK_NET: clk_pad/Y
-CLOCK_PERIOD: 40 # 25 MHz
+CLOCK_PERIOD: 55
 
 # Fix hold violations
-PL_RESIZER_HOLD_SLACK_MARGIN: 0.35
-GRT_RESIZER_HOLD_SLACK_MARGIN: 0.3
+PL_RESIZER_HOLD_SLACK_MARGIN: 0.6
+GRT_RESIZER_HOLD_SLACK_MARGIN: 0.6
 
 # Increase for more logic
 # on your die
-PL_TARGET_DENSITY_PCT: 35
+PL_TARGET_DENSITY_PCT: 20
 GRT_ALLOW_CONGESTION: true
+
+# PVT fixes - BreakingTaps
+PL_RESIZER_SETUP_SLACK_MARGIN: 10
+GRT_RESIZER_SETUP_SLACK_MARGIN: 8
+SYNTH_STRATEGY: AREA 3
+PL_RESIZER_HOLD_MAX_BUFFER_PCT: 60
+GRT_RESIZER_HOLD_MAX_BUFFER_PCT: 80
+PL_RESIZER_SETUP_MAX_BUFFER_PCT: 60
+GRT_RESIZER_SETUP_MAX_BUFFER_PCT: 80
+#PL_RESIZER_ALLOW_SETUP_VIOS: true
+
+RUN_POST_GRT_RESIZER_TIMING: true
+
+DESIGN_REPAIR_MAX_CAP_PCT: 60
+DESIGN_REPAIR_MAX_SLEW_PCT: 70
 
 # Fix antenna violations after DRT
 DRT_ANTENNA_REPAIR_ITERS: 10
@@ -162,8 +287,45 @@ MACROS:
     instances:
       wafer_space_logo:
         location: ["expr::$DIE_AREA[2] + -169.25", "expr::$DIE_AREA[3] + -169.25"]
+        orientation: S
+
+  gf180mcu_bt_ip__logo:
+    gds:
+      - dir::../ip/gf180mcu_bt_ip__logo/gds/gf180mcu_bt_ip__logo.gds
+    lef:
+      - dir::../ip/gf180mcu_bt_ip__logo/lef/gf180mcu_bt_ip__logo.lef
+    vh:
+      - dir::../ip/gf180mcu_bt_ip__logo/vh/gf180mcu_bt_ip__logo.v
+    lib:
+      "*":
+        - dir::../ip/gf180mcu_bt_ip__logo/lib/gf180mcu_bt_ip__logo.lib
+    instances:
+      bt_logo:
+        location: ["expr::$DIE_AREA[2] + -187.5 + -30", 50]
         orientation: N
 
+  gf180mcu_bt_ip__tap:
+    gds:
+      - dir::../ip/gf180mcu_bt_ip__tap/gds/gf180mcu_bt_ip__tap.gds
+    lef:
+      - dir::../ip/gf180mcu_bt_ip__tap/lef/gf180mcu_bt_ip__tap.lef
+    vh:
+      - dir::../ip/gf180mcu_bt_ip__tap/vh/gf180mcu_bt_ip__tap.v
+    lib:
+      "*":
+        - dir::../ip/gf180mcu_bt_ip__tap/lib/gf180mcu_bt_ip__tap.lib
+    instances:
+      bt_tap:
+        location: [26, "expr::$DIE_AREA[3] + -81 + -50"]
+        orientation: N
+
+
+
+
+
+
+
+  # gf180mcu_fd_ip_sram__sram512x8m8wm1
   gf180mcu_fd_ip_sram__sram512x8m8wm1:
     gds:
       - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/gds/gf180mcu_fd_ip_sram__sram512x8m8wm1.gds
@@ -179,19 +341,148 @@ MACROS:
       "*_ss_125C_4v50":
         - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lib/gf180mcu_fd_ip_sram__sram512x8m8wm1__ss_125C_4v50.lib
     instances:
-      # Make sure to specify the SRAMs in pdn_cfg.tcl
-      i_chip_core.sram_0:
-        location: [490, 500]
-        orientation: N
-      i_chip_core.sram_1:
-        location: [970, 500]
+      i_chip_core.chip_top_inst.tta_0.lsu_fu_0.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_1:
+        location: [2038, 515]
+        orientation: S
+      i_chip_core.chip_top_inst.tta_0.lsu_fu_0.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_0:
+        location: [2490, 514]
+        orientation: S
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_0:
+        location: [2565, 1118]
         orientation: E
+      i_chip_core.chip_top_inst.tta_0.lsu_fu_0.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_3:
+        location: [1138, 515]
+        orientation: S
+      i_chip_core.chip_top_inst.tta_0.lsu_fu_0.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_2:
+        location: [1588, 515]
+        orientation: S
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_2:
+        location: [2318, 3565]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_2:
+        location: [2818, 3565]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_1:
+        location: [2318, 3015]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_0:
+        location: [2818, 3015]
+        orientation: N
+      i_chip_core.chip_top_inst.tta_0.lsu_fu_1.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_3:
+        location: [515, 1918]
+        orientation: W
+      i_chip_core.chip_top_inst.tta_0.lsu_fu_1.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_2:
+        location: [515, 1458]
+        orientation: W
+      i_chip_core.chip_top_inst.tta_0.lsu_fu_1.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_1:
+        location: [518, 995]
+        orientation: W
+      i_chip_core.chip_top_inst.tta_0.lsu_fu_1.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_0:
+        location: [520, 540]
+        orientation: W
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_3:
+        location: [2565, 2468]
+        orientation: E
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_2:
+        location: [2565, 2018]
+        orientation: E
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_1:
+        location: [2565, 1568]
+        orientation: E
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_1:
+        location: [1318, 3565]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_1:
+        location: [1818, 4115]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_3:
+        location: [1818, 3565]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_0:
+        location: [1818, 3015]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_2:
+        location: [1318, 4115]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_3:
+        location: [818, 4115]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_3:
+        location: [2818, 4115]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_0:
+        location: [2318, 4115]
+        orientation: N
+
+  # gf180mcu_fd_ip_sram__sram256x8m8wm1
+  gf180mcu_fd_ip_sram__sram256x8m8wm1:
+    gds:
+      - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/gds/gf180mcu_fd_ip_sram__sram256x8m8wm1.gds
+    lef:
+      - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lef/gf180mcu_fd_ip_sram__sram256x8m8wm1.lef
+    vh:
+      - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/verilog/gf180mcu_fd_ip_sram__sram256x8m8wm1__blackbox.v
+    lib:
+      "*_tt_025C_5v00":
+        - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lib/gf180mcu_fd_ip_sram__sram256x8m8wm1__tt_025C_5v00.lib
+      "*_ff_n40C_5v50":
+        - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lib/gf180mcu_fd_ip_sram__sram256x8m8wm1__ff_n40C_5v50.lib
+      "*_ss_125C_4v50":
+        - pdk_dir::libs.ref/gf180mcu_fd_ip_sram/lib/gf180mcu_fd_ip_sram__sram256x8m8wm1__ss_125C_4v50.lib
+    instances:
+      i_chip_core.chip_top_inst.tta_0.stack_lsu_fu_0.stack_ram_256x32_0.gf180mcu_fd_ip_sram__sram256x8m8wm1_3:
+        location: [950, 2450]
+        orientation: W
+      i_chip_core.chip_top_inst.tta_0.stack_lsu_fu_0.stack_ram_256x32_0.gf180mcu_fd_ip_sram__sram256x8m8wm1_2:
+        location: [950, 2950]
+        orientation: W
+      i_chip_core.chip_top_inst.tta_0.stack_lsu_fu_0.stack_ram_256x32_0.gf180mcu_fd_ip_sram__sram256x8m8wm1_1:
+        location: [550, 2950]
+        orientation: W
+      i_chip_core.chip_top_inst.tta_0.stack_lsu_fu_0.stack_ram_256x32_0.gf180mcu_fd_ip_sram__sram256x8m8wm1_0:
+        location: [550, 2450]
+        orientation: W
+
+
+
 
 # This is an alternative method compared to
 # specifying the power connections in the RTL
 PDN_MACRO_CONNECTIONS:
-- "i_chip_core.sram_0 VDD VSS VDD VSS"
-- "i_chip_core.sram_1 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.tta_0.lsu_fu_0.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_0 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.tta_0.lsu_fu_0.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_1 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.tta_0.lsu_fu_0.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_2 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.tta_0.lsu_fu_0.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_3 VDD VSS VDD VSS"
+
+- "i_chip_core.chip_top_inst.tta_0.lsu_fu_1.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_0 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.tta_0.lsu_fu_1.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_1 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.tta_0.lsu_fu_1.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_2 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.tta_0.lsu_fu_1.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_3 VDD VSS VDD VSS"
+
+- "i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_0 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_1 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_2 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_3 VDD VSS VDD VSS"
+
+- "i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_0 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_1 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_2 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_3 VDD VSS VDD VSS"
+
+- "i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_0 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_1 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_2 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_3 VDD VSS VDD VSS"
+
+- "i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_0 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_1 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_2 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_3 VDD VSS VDD VSS"
+
+- "i_chip_core.chip_top_inst.tta_0.stack_lsu_fu_0.stack_ram_256x32_0.gf180mcu_fd_ip_sram__sram256x8m8wm1_0 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.tta_0.stack_lsu_fu_0.stack_ram_256x32_0.gf180mcu_fd_ip_sram__sram256x8m8wm1_1 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.tta_0.stack_lsu_fu_0.stack_ram_256x32_0.gf180mcu_fd_ip_sram__sram256x8m8wm1_2 VDD VSS VDD VSS"
+- "i_chip_core.chip_top_inst.tta_0.stack_lsu_fu_0.stack_ram_256x32_0.gf180mcu_fd_ip_sram__sram256x8m8wm1_3 VDD VSS VDD VSS"
 
 # Halo size around macros while cutting rows.
 # Workaround for: https://github.com/The-OpenROAD-Project/OpenROAD/issues/8868
@@ -207,9 +498,13 @@ PDN_CFG: dir::pdn_cfg.tcl
 LVS_FLATTEN_CELLS:
 - gf180mcu_ws_ip__id
 - gf180mcu_ws_ip__logo
+- gf180mcu_bt_ip__logo
+- gf180mcu_bt_ip__tap
 
 # gf180mcu_ws_ip__id/logo has no ports and components
 # therefore make it an abstract cell in the layout
 MAGIC_EXT_ABSTRACT_CELLS:
 - gf180mcu_ws_ip__id
 - gf180mcu_ws_ip__logo
+- gf180mcu_bt_ip__logo
+- gf180mcu_bt_ip__tap
