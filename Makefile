@@ -39,10 +39,16 @@ clone-pdk: ## Clone the GF180MCU PDK repository
 .PHONY: clone-pdk
 
 librelane: ## Run LibreLane flow (synthesis, PnR, verification)
+	export STD_CELL_LIBRARY=gf180mcu_fd_sc_mcu9t5v0
 	librelane librelane/slots/slot_${SLOT}.yaml librelane/config.yaml --pdk ${PDK} --pdk-root ${PDK_ROOT} --manual-pdk
 .PHONY: librelane
 
+librelane-from: ## Run LibreLane flow (synthesis, PnR, verification)
+	librelane librelane/slots/slot_${SLOT}.yaml librelane/config.yaml --pdk ${PDK} --pdk-root ${PDK_ROOT} --manual-pdk --last-run --from Magic.DRC --with-initial-state librelane/runs/RUN_2025-12-02_01-49-34/64-checker-klayoutdensity/state_out.json
+.PHONY: librelane
+
 librelane-nodrc: ## Run LibreLane flow without DRC checks
+	export STD_CELL_LIBRARY=gf180mcu_fd_sc_mcu9t5v0
 	librelane librelane/slots/slot_${SLOT}.yaml librelane/config.yaml --pdk ${PDK} --pdk-root ${PDK_ROOT} --manual-pdk --skip KLayout.DRC --skip Magic.DRC
 .PHONY: librelane-nodrc
 
@@ -81,5 +87,5 @@ copy-final: ## Copy final output files from the last run
 
 render-image: ## Render an image from the final layout (after copy-final)
 	mkdir -p img/
-	PDK_ROOT=${PDK_ROOT} PDK=${PDK} python3 scripts/lay2img.py final/gds/${TOP}.gds img/${TOP}.png --width 2048 --oversampling 4
+	PDK_ROOT=${PDK_ROOT} PDK=${PDK} python3 scripts/lay2img.py final/gds/${TOP}.gds img/${TOP}.png --width 4096 --oversampling 4
 .PHONY: copy-final
