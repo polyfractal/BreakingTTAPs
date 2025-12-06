@@ -8,8 +8,8 @@ meta:
     #Checker.KLayoutDRC: null
 
     # Disable KLayout antenna check
-    KLayout.Antenna: null
-    Checker.KLayoutAntenna: null
+    #KLayout.Antenna: null
+    #Checker.KLayoutAntenna: null
 
     # Disable KLayout density check
     #KLayout.Density: null
@@ -31,6 +31,7 @@ VERILOG_FILES:
 
 # Enable plugin for better SystemVerilog support
 # USE_SLANG: True
+# SLANG_ARGUMENTS: ['--keep-hierarchy']
 
 # Slightly smaller file sizes
 PRIMARY_GDSII_STREAMOUT_TOOL: klayout
@@ -193,8 +194,12 @@ DESIGN_REPAIR_MAX_CAP_PCT: 60
 DESIGN_REPAIR_MAX_SLEW_PCT: 70
 
 # Fix antenna violations after DRT
-DRT_ANTENNA_REPAIR_ITERS: 10
-DRT_ANTENNA_MARGIN: 10 # %
+DRT_ANTENNA_REPAIR_ITERS: 20
+DRT_ANTENNA_MARGIN: 15 # %
+
+# Fix antenna violation
+INSERT_ECO_DIODES:
+- target: net9619/fanout9585
 
 # PDN - Straps
 PDN_VWIDTH: 5
@@ -250,8 +255,9 @@ MAGIC_GDS_FLATGLOB:
 - "xdec_*"
 - "ypredec*"
 - "xpredec*"
-- "xdec8_*"
 - "prexdec_*"
+- "xdec8_*"
+- "xdec16_*"
 - "xdec32_*"
 - "sa_*"
 
