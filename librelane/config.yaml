@@ -175,7 +175,7 @@ GRT_RESIZER_HOLD_SLACK_MARGIN: 0.6
 
 # Increase for more logic
 # on your die
-PL_TARGET_DENSITY_PCT: 20
+PL_TARGET_DENSITY_PCT: 45
 GRT_ALLOW_CONGESTION: true
 
 # PVT fixes - BreakingTaps
