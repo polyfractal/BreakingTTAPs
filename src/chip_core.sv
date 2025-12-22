@@ -1,3 +1,5 @@
+// Licensed under CERN Open Hardware Licence Version 2 - Strongly Reciprocal
+// See LICENSE in this directory for more details
 
 `default_nettype none
 module chip_core #(
