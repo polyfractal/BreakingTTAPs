@@ -1,0 +1,98 @@
+# Chip Configuration
+chip:
+  width: 4000
+  height: 5200
+  grid_size: 10
+
+MACROS:
+  # gf180mcu_fd_ip_sram__sram512x8m8wm1
+  gf180mcu_fd_ip_sram__sram512x8m8wm1:
+    instances:
+      i_chip_core.chip_top_inst.tta_0.lsu_fu_0.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_1:
+        location: [2038, 515]
+        orientation: S
+      i_chip_core.chip_top_inst.tta_0.lsu_fu_0.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_0:
+        location: [2490, 514]
+        orientation: S
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_0:
+        location: [2565, 1118]
+        orientation: E
+      i_chip_core.chip_top_inst.tta_0.lsu_fu_0.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_3:
+        location: [1138, 515]
+        orientation: S
+      i_chip_core.chip_top_inst.tta_0.lsu_fu_0.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_2:
+        location: [1588, 515]
+        orientation: S
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_2:
+        location: [2318, 3565]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_2:
+        location: [2818, 3565]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_1:
+        location: [2318, 3015]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_0:
+        location: [2818, 3015]
+        orientation: N
+      i_chip_core.chip_top_inst.tta_0.lsu_fu_1.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_3:
+        location: [515, 1918]
+        orientation: W
+      i_chip_core.chip_top_inst.tta_0.lsu_fu_1.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_2:
+        location: [515, 1458]
+        orientation: W
+      i_chip_core.chip_top_inst.tta_0.lsu_fu_1.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_1:
+        location: [518, 995]
+        orientation: W
+      i_chip_core.chip_top_inst.tta_0.lsu_fu_1.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_0:
+        location: [520, 540]
+        orientation: W
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_3:
+        location: [2565, 2468]
+        orientation: E
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_2:
+        location: [2565, 2018]
+        orientation: E
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_1:
+        location: [2565, 1568]
+        orientation: E
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_1:
+        location: [1318, 3565]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_1:
+        location: [1818, 4115]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_3:
+        location: [1818, 3565]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_0:
+        location: [1818, 3015]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_2:
+        location: [1318, 4115]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_3:
+        location: [818, 4115]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_3:
+        location: [2818, 4115]
+        orientation: N
+      i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_0:
+        location: [2318, 4115]
+        orientation: N
+
+  # gf180mcu_fd_ip_sram__sram256x8m8wm1
+  gf180mcu_fd_ip_sram__sram256x8m8wm1:
+    instances:
+      i_chip_core.chip_top_inst.tta_0.stack_lsu_fu_0.stack_ram_256x32_0.gf180mcu_fd_ip_sram__sram256x8m8wm1_3:
+        location: [950, 2450]
+        orientation: W
+      i_chip_core.chip_top_inst.tta_0.stack_lsu_fu_0.stack_ram_256x32_0.gf180mcu_fd_ip_sram__sram256x8m8wm1_2:
+        location: [950, 2950]
+        orientation: W
+      i_chip_core.chip_top_inst.tta_0.stack_lsu_fu_0.stack_ram_256x32_0.gf180mcu_fd_ip_sram__sram256x8m8wm1_1:
+        location: [550, 2950]
+        orientation: W
+      i_chip_core.chip_top_inst.tta_0.stack_lsu_fu_0.stack_ram_256x32_0.gf180mcu_fd_ip_sram__sram256x8m8wm1_0:
+        location: [550, 2450]
+        orientation: W
