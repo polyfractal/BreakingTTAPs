@@ -11,13 +11,15 @@ def convert_to_gds(
     output_filepath,
     cellname="TOP",
     scale=1.0,
+    width=None,
+    height=None,
     threshold=128,
     invert=False,
     invert_alpha=False,
     merge=False,
     smooth=False,
     pixel_size=6,
-    foreground="1/0",
+    foregrounds=["1/0"],
     boundaries=["0/0"],
 ):
 
@@ -31,8 +33,12 @@ def convert_to_gds(
     # Open the image
     img = Image.open(input_filepath)
 
-    layer, datatype = foreground.split('/')
-    foreground_layer = db.LayerInfo(int(layer), int(datatype))
+    # Add the foregrounds
+    foreground_layers = []
+    for foreground in foregrounds:
+        layer, datatype = foreground.split('/')
+        foreground_layer = db.LayerInfo(int(layer), int(datatype))
+        foreground_layers.append(foreground_layer)
 
     if not invert_alpha:
         # Create a white rgba background
@@ -62,6 +68,12 @@ def convert_to_gds(
             Image.LANCZOS,
         )
 
+    if width or height:
+        new_image_binary.thumbnail(
+            (width, height),
+            Image.LANCZOS,
+        )
+
     # Use a region to merge pixels together
     if merge:
         top_region = db.Region()
@@ -80,7 +92,8 @@ def convert_to_gds(
                     pixel_polygon = db.DPolygon(pixel)
                     top_region.insert(from_um * pixel_polygon)
                 else:
-                    top.shapes(foreground_layer).insert(pixel)
+                    for foreground_layer in foreground_layers:
+                        top.shapes(foreground_layer).insert(pixel)
 
     if merge:
         top_region.merge()
@@ -88,7 +101,8 @@ def convert_to_gds(
         if smooth:
             top_region = top_region.smoothed(from_um * pixel_size * 0.99)
 
-        top.shapes(foreground_layer).insert(top_region)
+        for foreground_layer in foreground_layers:
+            top.shapes(foreground_layer).insert(top_region)
 
     # Add the boundaries
     for boundary in boundaries:
@@ -116,6 +130,12 @@ if __name__ == "__main__":
         "--scale", type=float, default=1.0, help="downscale the image, e.g. 0.5"
     )
     parser.add_argument(
+        "--width", type=int, default=None, help="scale to image width"
+    )
+    parser.add_argument(
+        "--height", type=int, default=None, help="scale to image height"
+    )
+    parser.add_argument(
         "--threshold", type=int, default=128, help="threshold to compare against"
     )
     parser.add_argument("--invert", action="store_true", help="invert the pixels")
@@ -125,6 +145,7 @@ if __name__ == "__main__":
     parser.add_argument("--merge", action="store_true", help="merge polygons")
     parser.add_argument(
         "--foreground",
+        nargs="*",
         type=str,
         help="gds layer/datatype pair for foreground pixels e.g. 0/0",
     )
@@ -143,12 +164,14 @@ if __name__ == "__main__":
         args.gds_path,
         cellname=args.cellname,
         scale=args.scale,
+        width=args.width,
+        height=args.height,
         threshold=args.threshold,
         invert=args.invert,
         invert_alpha=args.invert_alpha,
         merge=args.merge,
         smooth=args.smooth,
         pixel_size=args.pixel_size,
-        foreground=args.foreground,
+        foregrounds=args.foreground,
         boundaries=args.boundary,
     )
