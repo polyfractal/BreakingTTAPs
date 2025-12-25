@@ -175,7 +175,7 @@ GRT_RESIZER_HOLD_SLACK_MARGIN: 0.6
 
 # Increase for more logic
 # on your die
-PL_TARGET_DENSITY_PCT: 45
+PL_TARGET_DENSITY_PCT: 40
 GRT_ALLOW_CONGESTION: true
 
 # PVT fixes - BreakingTaps
@@ -195,11 +195,11 @@ DESIGN_REPAIR_MAX_SLEW_PCT: 70
 
 # Fix antenna violations after DRT
 DRT_ANTENNA_REPAIR_ITERS: 20
-DRT_ANTENNA_MARGIN: 15 # %
+DRT_ANTENNA_MARGIN: 18 # %
 
 # Fix antenna violation
-INSERT_ECO_DIODES:
-- target: net9619/fanout9585
+#INSERT_ECO_DIODES:
+#- target: net9619/fanout9585
 
 # PDN - Straps
 PDN_VWIDTH: 5
@@ -362,7 +362,7 @@ MACROS:
         location: [2490, 514]
         orientation: S
       i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_0:
-        location: [2565, 1118]
+        location: [2565, 1058]
         orientation: E
       i_chip_core.chip_top_inst.tta_0.lsu_fu_0.sram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_3:
         location: [1138, 515]
@@ -395,13 +395,13 @@ MACROS:
         location: [520, 540]
         orientation: W
       i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_3:
-        location: [2565, 2468]
+        location: [2565, 2478]
         orientation: E
       i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_2:
-        location: [2565, 2018]
+        location: [2565, 2008]
         orientation: E
       i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_0.iram_512x32_0.gf180mcu_fd_ip_sram__sram512x8m8wm1_1:
-        location: [2565, 1568]
+        location: [2565, 1538]
         orientation: E
       i_chip_core.chip_top_inst.boot_imem_sub_0.imem_0.iram_1024x32_1.iram_512x32_1.gf180mcu_fd_ip_sram__sram512x8m8wm1_1:
         location: [1318, 3565]
